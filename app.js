@@ -10,6 +10,8 @@ const multer = require('multer')
 
 const feedRoutes = require('./routes/feeds')
 
+const authRoutes = require('./routes/Auth')
+
 const app = express()
 
 const fileStorage = multer.diskStorage({
@@ -49,10 +51,14 @@ app.use((req, res, next) => {
 })
 
 app.use('/feed',feedRoutes)
+
+app.use('/auth', authRoutes)
+
 app.use((error, req, res, next) => {
     console.log(error)
     const status = error.statusCode || 500
     const message = error.message
+    // const data = error.error.data
     res.status(status).json({ message: message})
 })
 mongoose.connect('mongodb://localhost:27017/admin')
